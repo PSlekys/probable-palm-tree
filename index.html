@@ -12,10 +12,33 @@
   </head>
   <body>
     <a href="add.html">Add</a>
+    <button id="logout">Logout</button>
+
     <h1>Tasks</h1>
-    <ul>
-      <li>Get Food</li>
-      <li>Clean House</li>
-    </ul>
+    <ul></ul>
+
+    <script>
+      const user = localStorage.getItem("user");
+      if (!user) {
+        location.replace("login.html");
+      } else {
+        fetch(
+          `https://super-duper-octo-guide-ly8nh.ondigitalocean.app/tasks/${user}`
+        )
+          .then((res) => res.json())
+          .then((data) => {
+            data.forEach((item) => {
+              const li = document.createElement("li");
+              li.textContent = item;
+              document.querySelector("ul").append(li);
+            });
+          });
+      }
+
+      document.getElementById("logout").addEventListener("click", () => {
+        localStorage.removeItem("user");
+        location.replace("index.html");
+      });
+    </script>
   </body>
 </html>

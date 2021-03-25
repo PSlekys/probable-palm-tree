@@ -18,5 +18,31 @@
       <input type="password" name="pass" placeholder="Password" />
       <button type="submit">Login</button>
     </form>
+
+    <script>
+      document.forms.login.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const email = event.target.elements.email.value.toLowerCase();
+        const pass = event.target.elements.pass.value;
+
+        fetch("https://super-duper-octo-guide-ly8nh.ondigitalocean.app/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, pass }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.status === "OK") {
+              localStorage.setItem("user", data.userid);
+              location.replace("index.html");
+            } else {
+              alert("Incorrect email or password");
+            }
+          });
+      });
+    </script>
   </body>
 </html>
